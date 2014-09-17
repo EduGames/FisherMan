@@ -51,3 +51,6 @@ out/
 cocos2d/
 linux-build/
 *~
+
+proj.android/.settings
+proj.android/local.properties
