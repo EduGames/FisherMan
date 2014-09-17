@@ -49,3 +49,4 @@ out/
 *.gtgz
 
 cocos2d/
+linux-build/
