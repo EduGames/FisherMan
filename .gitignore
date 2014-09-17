@@ -54,3 +54,11 @@ linux-build/
 
 proj.android/.settings
 proj.android/local.properties
+/CMakeCache.txt
+/CMakeFiles
+/CMakeFiles/cmake.
+/cmake_install.cmake
+/compile_commands.json
+/lib
+/Makefile
+/nbproject
