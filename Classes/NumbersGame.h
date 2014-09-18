@@ -5,6 +5,10 @@
 
 class NumbersGame : public cocos2d::Layer
 {
+private:
+    void createGameScreen (void);
+    void createPools(void);
+    void createActions(void);
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
@@ -17,6 +21,10 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(NumbersGame);
+    
+    virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event);
+    virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event);
+    virtual void update (float dt);
 };
 
 #endif // __NUMBERSGAME_SCENE_H__

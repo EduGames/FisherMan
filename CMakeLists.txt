@@ -58,7 +58,7 @@ if( UNIX ) #assume linux
 set(GAME_SRC
   proj.linux/main.cpp
   Classes/AppDelegate.cpp
-  Classes/HelloWorldScene.cpp
+  Classes/NumbersGame.cpp
 )
 elseif ( WIN32 )
 set(GAME_SRC
