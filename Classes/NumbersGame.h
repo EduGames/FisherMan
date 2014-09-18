@@ -3,12 +3,21 @@
 
 #include "cocos2d.h"
 
+enum {
+    kBackground,
+    kMiddleground,
+    kForeground
+};
+
 class NumbersGame : public cocos2d::Layer
 {
 private:
     void createGameScreen (void);
     void createPools(void);
     void createActions(void);
+    
+    cocos2d::SpriteBatchNode * _gameBatchNode;
+    cocos2d::Size _screenSize;
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();

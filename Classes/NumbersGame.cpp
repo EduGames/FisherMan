@@ -18,7 +18,7 @@ bool NumbersGame::init()
         return false;
     }
     
-    Size visibleSize = Director::getInstance()->getVisibleSize();
+    _screenSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     //create game screen elements
@@ -37,7 +37,16 @@ bool NumbersGame::init()
     return true;
 }
 
-void NumbersGame::createGameScreen () {}
+void NumbersGame::createGameScreen () {
+    Sprite * bg = Sprite::create("bg.png");
+    bg->setPosition(Vec2(_screenSize.width * 0.5f, _screenSize.height * 0.5f));
+    this->addChild(bg, kBackground);
+    
+    SpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("sprites.plist");
+    _gameBatchNode = SpriteBatchNode::create("sprites.png", 100);
+
+    this->addChild(_gameBatchNode, kForeground);
+}
 void NumbersGame::createPools () {}
 void NumbersGame::createActions () {}
 void NumbersGame::update (float dt) {}

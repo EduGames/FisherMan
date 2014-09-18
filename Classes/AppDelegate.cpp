@@ -20,6 +20,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
+    auto fileUtils = FileUtils::getInstance();
+    std::vector<std::string> searchPaths;
+    searchPaths.push_back("Images");
+    fileUtils->setSearchPaths(searchPaths);
+    
     // turn on display FPS
     director->setDisplayStats(true);
 
