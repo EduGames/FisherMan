@@ -16,9 +16,19 @@ private:
     void createPools(void);
     void createActions(void);
     
+    void resetFish();
+    cocos2d::Vector<cocos2d::Sprite*> _fishPool;
+    int _fishPoolIndex;
+    
     cocos2d::SpriteBatchNode * _gameBatchNode;
     cocos2d::Size _screenSize;
+    
+    float _fishInterval;
+    float _fishTimer;
+    
+    bool _running;
 public:
+    NumbersGame();
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
 

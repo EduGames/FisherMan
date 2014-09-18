@@ -1,7 +1,9 @@
 #include "NumbersGame.h"
 
 USING_NS_CC;
-
+NumbersGame::NumbersGame() : _fishPool(20)
+{
+}
 Scene* NumbersGame::createScene()
 {
     auto scene = Scene::create();
@@ -46,9 +48,40 @@ void NumbersGame::createGameScreen () {
     _gameBatchNode = SpriteBatchNode::create("sprites.png", 100);
 
     this->addChild(_gameBatchNode, kForeground);
+    
+    
 }
-void NumbersGame::createPools () {}
+void NumbersGame::createPools () {
+    Sprite * sprite;
+    int i,output;
+    
+    _fishPoolIndex = 0;
+    for (i = 0; i < _fishPool.capacity(); i++) {
+        output = 1 + (rand() % (int)(6 - 2));
+        auto name = CCString::createWithFormat("fish_%i.png", output);
+        sprite = Sprite::createWithSpriteFrameName(name->_string);
+        sprite->setVisible(false);
+        _gameBatchNode->addChild(sprite, kMiddleground);
+        _fishPool.pushBack(sprite);
+    }
+}
 void NumbersGame::createActions () {}
-void NumbersGame::update (float dt) {}
-bool NumbersGame::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event){return true;}
+void NumbersGame::update (float dt) {
+    if (!_running) return;
+    //update timers
+    _fishTimer += dt;
+
+    if (_fishTimer > _fishInterval) {
+        _fishTimer = 0;
+        this->resetFish();
+    }
+}
+bool NumbersGame::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event){
+    if (!_running) _running = true;
+    return true;
+}
 void NumbersGame::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event){}
+
+void NumbersGame::resetFish(){
+    
+}
