@@ -23,8 +23,9 @@ private:
     cocos2d::SpriteBatchNode * _gameBatchNode;
     cocos2d::Size _screenSize;
     
-    float _fishInterval;
+    float _fishInterval = 1.5;
     float _fishTimer;
+    float _fishSpeed = 6;
     
     bool _running;
 public:
