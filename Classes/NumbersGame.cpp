@@ -74,13 +74,14 @@ void NumbersGame::createActions () {
 }
 void NumbersGame::update (float dt) {
     if (!_running) return;
-    //update timers
+    
     _fishTimer += dt;
-
     if (_fishTimer > _fishInterval) {
         _fishTimer = 0;
         this->resetFish();
     }
+    
+    if(_hook_has_fish) return;
     
     if (_hook_pull){
         _hook->setPosition(_hook->getPositionX(),_hook->getPositionY() + 5);
@@ -95,19 +96,22 @@ void NumbersGame::update (float dt) {
                 _hook_has_fish = true;
                 _hook_pull = false;
                 
-                auto swim = MoveTo::create(1, Vec2(fish->getPositionX(),_screenSize.height));
+                auto fishing = MoveTo::create(
+                    ( (_screenSize.height - _hook->getPositionY()) * 0.002)
+                    , Vec2(_hook->getPositionX(),_screenSize.height));
                 auto rotate = RotateTo::create(0.2,90);
                 fish->runAction(
                  CCSequence::create(
-                    swim->clone(),
+                    fishing->clone(),
                     CCCallFuncN::create(this, callfuncN_selector(NumbersGame::fishingDone)),
                     NULL)
                 );
                 fish->runAction(rotate);
-                _hook->runAction(swim);
+                _hook->runAction(fishing);
+                _hook->setVisible(false);
             }
         }
-    }else if(!_hook_has_fish){
+    }else{
         _hook->setPosition(_hook->getPositionX(),_hook->getPositionY() - 3);
         if(_hook->getPositionY() < _hook->getBoundingBox().size.height /2)
             _hook->setPositionY( _hook->getBoundingBox().size.height /2);
@@ -115,7 +119,6 @@ void NumbersGame::update (float dt) {
 }
 bool NumbersGame::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event){
     if (!_running) _running = true;
-    if(_hook_has_fish) return true;
     _hook_pull = true;
     return true;
 }
@@ -142,5 +145,7 @@ void NumbersGame::resetFish(){
 void NumbersGame::fishingDone (Node* pSender) {
   pSender->setVisible(false);
   pSender->setRotation(0);
+  pSender->setPosition(0,0);
   _hook_has_fish = false;
+  _hook->setVisible(true);
 }
