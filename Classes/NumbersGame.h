@@ -31,6 +31,8 @@ private:
     bool _running;
     bool _hook_pull;
     bool _hook_has_fish;
+    cocos2d::LabelTTF * _scoreDisplay;
+    int _score;
 public:
     NumbersGame();
     // there's no 'id' in cpp, so we recommend returning the class instance pointer

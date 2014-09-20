@@ -23,6 +23,7 @@ bool NumbersGame::init()
     _screenSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    _score = 0;
     //create game screen elements
     createGameScreen();
     //create object pools
@@ -53,6 +54,13 @@ void NumbersGame::createGameScreen () {
     _hook->setScale(0.1);
     _hook->setPosition(Vec2(_screenSize.width * 0.5f, _hook->getBoundingBox().size.height * 0.5));
     this->addChild(_hook, kMiddleground);
+    
+    _scoreDisplay = LabelTTF::create();
+    _scoreDisplay->setAnchorPoint(Vec2(1,0.5));
+    _scoreDisplay->setFontSize(20);
+    _scoreDisplay->setPosition(Vec2(_screenSize.width * 0.9f, _screenSize.height * 0.94f));
+    _scoreDisplay->setString("0");
+    this->addChild(_scoreDisplay,kForeground);
 }
 void NumbersGame::createPools () {
     Sprite * sprite;
@@ -148,4 +156,7 @@ void NumbersGame::fishingDone (Node* pSender) {
   pSender->setPosition(0,0);
   _hook_has_fish = false;
   _hook->setVisible(true);
+  _score++;
+  auto name = CCString::createWithFormat("%i", _score);
+  _scoreDisplay->setString(name->_string);
 }
