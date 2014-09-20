@@ -32,7 +32,7 @@ bool NumbersGame::init()
     
     auto listener = EventListenerTouchOneByOne::create();
     listener->onTouchBegan = CC_CALLBACK_2(NumbersGame::onTouchBegan, this);
-    listener->onTouchMoved = CC_CALLBACK_2(NumbersGame::onTouchMoved, this);
+    listener->onTouchEnded = CC_CALLBACK_2(NumbersGame::onTouchEnded, this);
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
         
     this->schedule(schedule_selector(NumbersGame::update));
@@ -49,7 +49,10 @@ void NumbersGame::createGameScreen () {
 
     this->addChild(_gameBatchNode, kForeground);
     
-    
+    _hook = Sprite::create("hook.png");
+    _hook->setScale(0.1);
+    _hook->setPosition(Vec2(_screenSize.width * 0.5f, _hook->getBoundingBox().size.height * 0.5));
+    this->addChild(_hook, kMiddleground);
 }
 void NumbersGame::createPools () {
     Sprite * sprite;
@@ -78,12 +81,47 @@ void NumbersGame::update (float dt) {
         _fishTimer = 0;
         this->resetFish();
     }
+    
+    if (_hook_pull){
+        _hook->setPosition(_hook->getPositionX(),_hook->getPositionY() + 5);
+        if(_hook->getPositionY() > _screenSize.height - _hook->getBoundingBox().size.height /2)
+            _hook->setPositionY( _screenSize.height - _hook->getBoundingBox().size.height /2);
+        
+        for (auto fish: this->_fishPool)
+        {
+            if(fish->getBoundingBox().intersectsRect(_hook->getBoundingBox()))
+            {
+                fish->stopAllActions();
+                _hook_has_fish = true;
+                _hook_pull = false;
+                
+                auto swim = MoveTo::create(1, Vec2(fish->getPositionX(),_screenSize.height));
+                auto rotate = RotateTo::create(0.2,90);
+                fish->runAction(
+                 CCSequence::create(
+                    swim->clone(),
+                    CCCallFuncN::create(this, callfuncN_selector(NumbersGame::fishingDone)),
+                    NULL)
+                );
+                fish->runAction(rotate);
+                _hook->runAction(swim);
+            }
+        }
+    }else if(!_hook_has_fish){
+        _hook->setPosition(_hook->getPositionX(),_hook->getPositionY() - 3);
+        if(_hook->getPositionY() < _hook->getBoundingBox().size.height /2)
+            _hook->setPositionY( _hook->getBoundingBox().size.height /2);
+    }
 }
 bool NumbersGame::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event){
     if (!_running) _running = true;
+    if(_hook_has_fish) return true;
+    _hook_pull = true;
     return true;
 }
-void NumbersGame::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event){}
+void NumbersGame::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event){
+    _hook_pull = false;
+}
 
 void NumbersGame::resetFish(){
     Sprite * fish = (Sprite *) _fishPool.at(_fishPoolIndex);
@@ -99,4 +137,10 @@ void NumbersGame::resetFish(){
 
     fish->setVisible ( true );
     fish->runAction(swim);
+}
+
+void NumbersGame::fishingDone (Node* pSender) {
+  pSender->setVisible(false);
+  pSender->setRotation(0);
+  _hook_has_fish = false;
 }

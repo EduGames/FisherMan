@@ -18,6 +18,7 @@ private:
     
     void resetFish();
     cocos2d::Vector<cocos2d::Sprite*> _fishPool;
+    cocos2d::Sprite * _hook;
     int _fishPoolIndex;
     
     cocos2d::SpriteBatchNode * _gameBatchNode;
@@ -28,6 +29,8 @@ private:
     float _fishSpeed = 6;
     
     bool _running;
+    bool _hook_pull;
+    bool _hook_has_fish;
 public:
     NumbersGame();
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -43,8 +46,10 @@ public:
     CREATE_FUNC(NumbersGame);
     
     virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event);
-    virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event);
+    virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event);
     virtual void update (float dt);
+    
+    void fishingDone (Node* pSender);
 };
 
 #endif // __NUMBERSGAME_SCENE_H__
