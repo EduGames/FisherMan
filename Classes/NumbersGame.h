@@ -32,6 +32,7 @@ private:
     bool _hook_pull;
     bool _hook_has_fish;
     cocos2d::LabelTTF * _scoreDisplay;
+    cocos2d::LabelTTF * _scoreDisplayLarge;
     int _score;
 public:
     NumbersGame();
@@ -52,6 +53,7 @@ public:
     virtual void update (float dt);
     
     void fishingDone (Node* pSender);
+    void bigScoreDone (Node* pSender);
 };
 
 #endif // __NUMBERSGAME_SCENE_H__

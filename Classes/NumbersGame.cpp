@@ -61,6 +61,14 @@ void NumbersGame::createGameScreen () {
     _scoreDisplay->setPosition(Vec2(_screenSize.width * 0.9f, _screenSize.height * 0.94f));
     _scoreDisplay->setString("0");
     this->addChild(_scoreDisplay,kForeground);
+    
+    
+    _scoreDisplayLarge = LabelTTF::create();
+    _scoreDisplayLarge->setFontSize(300);
+    _scoreDisplayLarge->setPosition(Vec2(_screenSize.width * 0.5f, _screenSize.height * 0.5f));
+    _scoreDisplayLarge->setScale(0.2);
+    _scoreDisplayLarge->setString("0");
+    this->addChild(_scoreDisplayLarge,kForeground);
 }
 void NumbersGame::createPools () {
     Sprite * sprite;
@@ -151,12 +159,23 @@ void NumbersGame::resetFish(){
 }
 
 void NumbersGame::fishingDone (Node* pSender) {
-  pSender->setVisible(false);
-  pSender->setRotation(0);
-  pSender->setPosition(0,0);
-  _hook_has_fish = false;
-  _hook->setVisible(true);
-  _score++;
-  auto name = CCString::createWithFormat("%i", _score);
-  _scoreDisplay->setString(name->_string);
+    pSender->setVisible(false);
+    pSender->setRotation(0);
+    pSender->setPosition(0,0);
+    _score++;
+    auto name = CCString::createWithFormat("%i", _score);
+    _scoreDisplay->setString(name->_string);
+    _scoreDisplayLarge->setString(name->_string);
+    _scoreDisplayLarge->setVisible(true);
+    _scoreDisplayLarge->runAction(CCSequence::create(
+        EaseBackInOut::create(ScaleTo::create(4,1)),
+        CCCallFuncN::create(this, callfuncN_selector(NumbersGame::bigScoreDone)),
+        NULL)
+    );
+}
+void NumbersGame::bigScoreDone (Node* pSender) {
+    pSender->setScale(0.2);
+    pSender->setVisible(false);
+    _hook_has_fish = false;
+    _hook->setVisible(true);
 }
