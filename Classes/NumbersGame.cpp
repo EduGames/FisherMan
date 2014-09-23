@@ -74,6 +74,10 @@ void NumbersGame::createGameScreen () {
     _scoreDisplayLarge->setString("0");
     _scoreDisplayLarge->setVisible(false);
     this->addChild(_scoreDisplayLarge,kForeground);
+    
+    ParticleSystemQuad* p = ParticleSystemQuad::create("bubbles.plist");
+    p->setScale(0.);
+    this->addChild(p,kForeground);
 }
 void NumbersGame::createPools () {
     Sprite * sprite;
