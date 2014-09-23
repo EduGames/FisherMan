@@ -1,4 +1,5 @@
 #include "NumbersGame.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 NumbersGame::NumbersGame() : _fishPool(20)
@@ -24,6 +25,7 @@ bool NumbersGame::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     _score = 0;
+    _hook_has_fish = false;
     //create game screen elements
     createGameScreen();
     //create object pools
@@ -56,6 +58,7 @@ void NumbersGame::createGameScreen () {
     this->addChild(_hook, kMiddleground);
     
     _scoreDisplay = LabelTTF::create();
+    _scoreDisplay->setFontName("fonts/font.ttf");
     _scoreDisplay->setAnchorPoint(Vec2(1,0.5));
     _scoreDisplay->setFontSize(20);
     _scoreDisplay->setPosition(Vec2(_screenSize.width * 0.9f, _screenSize.height * 0.94f));
@@ -65,9 +68,11 @@ void NumbersGame::createGameScreen () {
     
     _scoreDisplayLarge = LabelTTF::create();
     _scoreDisplayLarge->setFontSize(300);
+    _scoreDisplayLarge->setFontName("fonts/font.ttf");
     _scoreDisplayLarge->setPosition(Vec2(_screenSize.width * 0.5f, _screenSize.height * 0.5f));
     _scoreDisplayLarge->setScale(0.2);
     _scoreDisplayLarge->setString("0");
+    _scoreDisplayLarge->setVisible(false);
     this->addChild(_scoreDisplayLarge,kForeground);
 }
 void NumbersGame::createPools () {
@@ -167,8 +172,16 @@ void NumbersGame::fishingDone (Node* pSender) {
     _scoreDisplay->setString(name->_string);
     _scoreDisplayLarge->setString(name->_string);
     _scoreDisplayLarge->setVisible(true);
+
+    char numstr[21]; // enough to hold all numbers up to 64-bits
+    std::sprintf(numstr, "%i", _score);
+    std::string result__ = numstr + std::string("_.wav");
+    const char * audio_file = result__.c_str();
+    if(_score < 11)
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(audio_file);
+
     _scoreDisplayLarge->runAction(CCSequence::create(
-        EaseBackInOut::create(ScaleTo::create(4,1)),
+        EaseBackOut::create(ScaleTo::create(4,1)),
         CCCallFuncN::create(this, callfuncN_selector(NumbersGame::bigScoreDone)),
         NULL)
     );
