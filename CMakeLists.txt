@@ -59,6 +59,7 @@ set(GAME_SRC
   proj.linux/main.cpp
   Classes/AppDelegate.cpp
   Classes/NumbersGame.cpp
+  Classes/ChicksGame.cpp
 )
 elseif ( WIN32 )
 set(GAME_SRC
@@ -66,7 +67,8 @@ set(GAME_SRC
   proj.win32/main.h
   proj.win32/resource.h
   Classes/AppDelegate.cpp
-  Classes/HelloWorldScene.cpp
+  Classes/NumbersGame.cpp
+  Classes/ChicksGame.cpp
 )
 endif()
 

@@ -1,6 +1,6 @@
 #include "AppDelegate.h"
-#include "NumbersGame.h"
-
+//#include "NumbersGame.h"
+#include "ChicksGame.h"
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
@@ -23,6 +23,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto fileUtils = FileUtils::getInstance();
     std::vector<std::string> searchPaths;
     searchPaths.push_back("Images");
+    
+    glview->setDesignResolutionSize(1920,1080, ResolutionPolicy::SHOW_ALL);
+    
     fileUtils->setSearchPaths(searchPaths);
     
     // turn on display FPS
@@ -32,7 +35,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     // create a scene. it's an autorelease object
-    auto scene = NumbersGame::createScene();
+    auto scene = ChicksGame::createScene();
 
     // run
     director->runWithScene(scene);
