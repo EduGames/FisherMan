@@ -50,6 +50,10 @@ void ChicksGame::createGameScreen () {
     _gameBatchNode = SpriteBatchNode::create("chicks_sprites.png", 100);
 
     this->addChild(_gameBatchNode, kForeground);
+    
+    Sprite * black_chick = Sprite::createWithSpriteFrameName("chick_1.png");
+    black_chick->setPosition(Vec2(100,100));
+    _gameBatchNode->addChild(black_chick);
 }
 
 void ChicksGame::update (float dt) {

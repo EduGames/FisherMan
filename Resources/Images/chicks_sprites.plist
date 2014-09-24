@@ -81,7 +81,7 @@
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:2b5852b12633cbfabd9d82c21dba8071$</string>
             <key>textureFileName</key>
-            <string>chicks.png</string>
+            <string>chicks_sprites.png</string>
         </dict>
     </dict>
 </plist>
