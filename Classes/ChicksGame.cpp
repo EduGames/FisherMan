@@ -51,20 +51,36 @@ void ChicksGame::createGameScreen () {
 
     this->addChild(_gameBatchNode, kForeground);
     
-    Sprite * black_chick = Sprite::createWithSpriteFrameName("chick_1.png");
-    black_chick->setPosition(Vec2(100,100));
+    black_chick = Sprite::createWithSpriteFrameName("chick_1.png");
+    black_chick->setPosition(Vec2(200,200));
+    black_chick->setColor(Color3B::BLACK);
     _gameBatchNode->addChild(black_chick);
+    
+    
+    chick = Sprite::createWithSpriteFrameName("chick_1.png");
+    chick->setPosition(Vec2(500,500));
+    _gameBatchNode->addChild(chick);
 }
 
 void ChicksGame::update (float dt) {
 }
 
 bool ChicksGame::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event){
+    if(chick->getBoundingBox().containsPoint(touch->getLocation())){
+        check_clicked = true;
+    }
     return true;
 }
 void ChicksGame::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event){
+    if(check_clicked){
+        chick->setPosition(touch->getLocation());
+    }
 
 }
 void ChicksGame::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event){
-
+    check_clicked = false;
+    if(chick->getBoundingBox().containsPoint(black_chick->getPosition())){
+        chick->setPosition(black_chick->getPosition());
+        black_chick->setVisible(false);
+    }
 }

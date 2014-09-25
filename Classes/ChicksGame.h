@@ -35,6 +35,9 @@ private:
     
     cocos2d::SpriteBatchNode * _gameBatchNode;
     cocos2d::Size _screenSize;
+    cocos2d::Sprite * chick;
+    cocos2d::Sprite * black_chick;
+    bool check_clicked;
 };
 
 #endif	/* CHICKSGAME_H */
