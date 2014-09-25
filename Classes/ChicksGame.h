@@ -9,6 +9,7 @@
 #define	CHICKSGAME_H
 
 #include "cocos2d.h"
+#include "Objects/Chick.h"
 enum {
     kBackground,
     kMiddleground,
@@ -35,9 +36,11 @@ private:
     
     cocos2d::SpriteBatchNode * _gameBatchNode;
     cocos2d::Size _screenSize;
-    cocos2d::Sprite * chick;
     cocos2d::Sprite * black_chick;
-    bool check_clicked;
+    
+    cocos2d::Vector<Chick*> _chicks;
+    
+    void createChicks();
 };
 
 #endif	/* CHICKSGAME_H */

@@ -60,6 +60,7 @@ set(GAME_SRC
   Classes/AppDelegate.cpp
   Classes/NumbersGame.cpp
   Classes/ChicksGame.cpp
+  Classes/Objects/Chick.cpp
 )
 elseif ( WIN32 )
 set(GAME_SRC

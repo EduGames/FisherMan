@@ -10,7 +10,7 @@ USING_NS_CC;
 
 ChicksGame::~ChicksGame() {
 }
-ChicksGame::ChicksGame() {
+ChicksGame::ChicksGame(): _chicks (5) {
 }
 Scene* ChicksGame::createScene()
 {
@@ -51,36 +51,57 @@ void ChicksGame::createGameScreen () {
 
     this->addChild(_gameBatchNode, kForeground);
     
-    black_chick = Sprite::createWithSpriteFrameName("chick_1.png");
-    black_chick->setPosition(Vec2(200,200));
-    black_chick->setColor(Color3B::BLACK);
-    _gameBatchNode->addChild(black_chick);
-    
-    
-    chick = Sprite::createWithSpriteFrameName("chick_1.png");
-    chick->setPosition(Vec2(500,500));
-    _gameBatchNode->addChild(chick);
+    createChicks();
 }
 
 void ChicksGame::update (float dt) {
 }
 
 bool ChicksGame::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event){
-    if(chick->getBoundingBox().containsPoint(touch->getLocation())){
-        check_clicked = true;
+    for (auto chick: this->_chicks){
+        if(chick->getBoundingBox().containsPoint(touch->getLocation())){
+            chick->setIsTouched(true);
+        }
     }
+    
     return true;
 }
 void ChicksGame::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event){
-    if(check_clicked){
-        chick->setPosition(touch->getLocation());
+    for (auto chick: this->_chicks){
+        if(chick->getIsTouched()){
+            if(!chick->getIsSolved())
+                chick->setPosition(touch->getLocation());
+        }
     }
 
 }
 void ChicksGame::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event){
-    check_clicked = false;
-    if(chick->getBoundingBox().containsPoint(black_chick->getPosition())){
-        chick->setPosition(black_chick->getPosition());
-        black_chick->setVisible(false);
+    for (auto chick: this->_chicks){
+        if(chick->getIsTouched()){
+            chick->setIsTouched(false);
+            if(chick->getBoundingBox().containsPoint(black_chick->getPosition())){
+                chick->setPosition(black_chick->getPosition());
+                chick->setIsSolved(true);
+            }else{
+                chick->setPosition(chick->getOriginalPosition());
+            }
+        }
+    }
+}
+
+void ChicksGame::createChicks(){
+    black_chick = Sprite::createWithSpriteFrameName("chick_1.png");
+    black_chick->setPosition(Vec2(1200,200));
+    black_chick->setColor(Color3B::BLACK);
+    _gameBatchNode->addChild(black_chick);
+    
+    Chick *sprite;
+    for (int i = 1; i <= _chicks.capacity(); i++) {
+        auto name = CCString::createWithFormat("chick_%i.png", i);
+        sprite = Chick::createChick(name->_string.c_str(), Vec2( i * 100,i*100));
+        sprite->setIsSolved(false);
+        sprite->setIsTouched(false);
+        _gameBatchNode->addChild(sprite);
+        _chicks.pushBack(sprite);
     }
 }
