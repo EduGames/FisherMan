@@ -10,7 +10,7 @@ USING_NS_CC;
 
 ChicksGame::~ChicksGame() {
 }
-ChicksGame::ChicksGame(): _chicks (5) {
+ChicksGame::ChicksGame(): _chicks (5), black_chicks(5) {
 }
 Scene* ChicksGame::createScene()
 {
@@ -52,12 +52,22 @@ void ChicksGame::createGameScreen () {
     this->addChild(_gameBatchNode, kForeground);
     
     createChicks();
+    
+    _scoreDisplayLarge = LabelTTF::create();
+    _scoreDisplayLarge->setFontSize(300);
+    _scoreDisplayLarge->setFontName("fonts/font.ttf");
+    _scoreDisplayLarge->setPosition(Vec2(_screenSize.width * 0.5f, _screenSize.height * 0.5f));
+    _scoreDisplayLarge->setScale(0.2);
+    _scoreDisplayLarge->setString("0");
+    _scoreDisplayLarge->setVisible(false);
+    this->addChild(_scoreDisplayLarge,kForeground);
 }
 
 void ChicksGame::update (float dt) {
 }
 
 bool ChicksGame::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event * event){
+    if (_scoring) return true;
     for (auto chick: this->_chicks){
         if(chick->getBoundingBox().containsPoint(touch->getLocation())){
             chick->setIsTouched(true);
@@ -77,11 +87,13 @@ void ChicksGame::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event * event){
 }
 void ChicksGame::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event){
     for (auto chick: this->_chicks){
-        if(chick->getIsTouched()){
+        if(chick->getIsTouched() && !chick->getIsSolved()){
+            Sprite * black_chick = black_chicks.at(_chicks.getIndex(chick));
             chick->setIsTouched(false);
             if(chick->getBoundingBox().containsPoint(black_chick->getPosition())){
                 chick->setPosition(black_chick->getPosition());
                 chick->setIsSolved(true);
+                addScore();
             }else{
                 chick->setPosition(chick->getOriginalPosition());
             }
@@ -90,18 +102,48 @@ void ChicksGame::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event){
 }
 
 void ChicksGame::createChicks(){
-    black_chick = Sprite::createWithSpriteFrameName("chick_1.png");
-    black_chick->setPosition(Vec2(1200,200));
-    black_chick->setColor(Color3B::BLACK);
-    _gameBatchNode->addChild(black_chick);
-    
     Chick *sprite;
+    Sprite * black;
     for (int i = 1; i <= _chicks.capacity(); i++) {
         auto name = CCString::createWithFormat("chick_%i.png", i);
+        
         sprite = Chick::createChick(name->_string.c_str(), Vec2( i * 100,i*100));
         sprite->setIsSolved(false);
         sprite->setIsTouched(false);
-        _gameBatchNode->addChild(sprite);
+        _gameBatchNode->addChild(sprite, kForeground);
         _chicks.pushBack(sprite);
+        
+        black = Sprite::createWithSpriteFrameName(name->_string.c_str());
+        black->setPosition(Vec2(200 + i * 160,i*180));
+        black->setColor(Color3B::BLACK);
+        _gameBatchNode->addChild(black, kMiddleground);
+        black_chicks.pushBack(black);
     }
+}
+void ChicksGame::addScore(){
+    _scoring = true;
+    _score++;
+    auto name = CCString::createWithFormat("%i", _score);
+    
+    _scoreDisplayLarge->setString(name->_string);
+    _scoreDisplayLarge->setVisible(true);
+    
+    char numstr[21]; // enough to hold all numbers up to 64-bits
+    std::sprintf(numstr, "%i", _score);
+    std::string result__ = numstr + std::string("_.wav");
+    const char * audio_file = result__.c_str();
+    if(_score < 11)
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(audio_file);
+    
+    _scoreDisplayLarge->runAction(CCSequence::create(
+        EaseBackOut::create(ScaleTo::create(4,1)),
+        CCCallFuncN::create(this, callfuncN_selector(ChicksGame::bigScoreDone)),
+        NULL)
+    );
+}
+
+void ChicksGame::bigScoreDone (Node* pSender) {
+    pSender->setScale(0.2);
+    pSender->setVisible(false);
+    _scoring = false;
 }

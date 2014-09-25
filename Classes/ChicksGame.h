@@ -36,11 +36,14 @@ private:
     
     cocos2d::SpriteBatchNode * _gameBatchNode;
     cocos2d::Size _screenSize;
-    cocos2d::Sprite * black_chick;
+    cocos2d::Vector<cocos2d::Sprite *> black_chicks;
     
     cocos2d::Vector<Chick*> _chicks;
     
     void createChicks();
+    void addScore();
+    void bigScoreDone (Node* pSender);
+    bool _scoring;
 };
 
 #endif	/* CHICKSGAME_H */
