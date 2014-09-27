@@ -25,6 +25,9 @@ bool ChicksGame::init()
     {
         return false;
     }
+    
+    _scoring = false;
+    
     _screenSize = Director::getInstance()->getVisibleSize();
     
      _score = 0;
@@ -102,22 +105,35 @@ void ChicksGame::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event){
 }
 
 void ChicksGame::createChicks(){
+    std::string levelsFile = CCFileUtils::sharedFileUtils()->fullPathForFilename("data/chicks.plist");
+    auto _chickss = Dictionary::createWithContentsOfFileThreadSafe(levelsFile.c_str());
+    
     Chick *sprite;
     Sprite * black;
-    for (int i = 1; i <= _chicks.capacity(); i++) {
-        auto name = CCString::createWithFormat("chick_%i.png", i);
+    int i= 1;
+    DictElement* pElement = NULL;
+    CCDICT_FOREACH(_chickss, pElement){
+        Dictionary * chickk = (Dictionary *) pElement->getObject();
+        auto x = chickk->valueForKey("x")->floatValue();
+        auto y = chickk->valueForKey("y")->floatValue();
+        auto x_black = chickk->valueForKey("x_black")->floatValue();
+        auto y_black = chickk->valueForKey("y_black")->floatValue();
         
-        sprite = Chick::createChick(name->_string.c_str(), Vec2( i * 100,i*100));
+        auto name = CCString::createWithFormat("chick_%i.png", i);
+        sprite = Chick::createChick(name->_string.c_str(), Vec2( x,y));
+        
         sprite->setIsSolved(false);
         sprite->setIsTouched(false);
         _gameBatchNode->addChild(sprite, kForeground);
         _chicks.pushBack(sprite);
         
         black = Sprite::createWithSpriteFrameName(name->_string.c_str());
-        black->setPosition(Vec2(200 + i * 160,i*180));
+        black->setPosition(Vec2(x_black,y_black));
         black->setColor(Color3B::BLACK);
         _gameBatchNode->addChild(black, kMiddleground);
         black_chicks.pushBack(black);
+        
+        i++;
     }
 }
 void ChicksGame::addScore(){
