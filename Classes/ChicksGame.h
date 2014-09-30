@@ -39,8 +39,10 @@ private:
     cocos2d::Vector<cocos2d::Sprite *> black_chicks;
     
     cocos2d::Vector<Chick*> _chicks;
+    cocos2d::Dictionary* _levelData;
     
-    void createChicks();
+    void createDynamicObjects();
+    void createStaticObjects();
     void addScore();
     void bigScoreDone (Node* pSender);
     bool _scoring;

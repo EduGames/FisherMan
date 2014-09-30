@@ -69,17 +69,30 @@
                 <key>sourceSize</key>
                 <string>{146,214}</string>
             </dict>
+            <key>chicken.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,436},{333,450}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{333,450}}</string>
+                <key>sourceSize</key>
+                <string>{333,450}</string>
+            </dict>
         </dict>
         <key>metadata</key>
         <dict>
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>chicks.png</string>
+            <string>chicks_sprites.png</string>
             <key>size</key>
-            <string>{512,512}</string>
+            <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:2b5852b12633cbfabd9d82c21dba8071$</string>
+            <string>$TexturePacker:SmartUpdate:d77167caff0791325458548aecc9e498$</string>
             <key>textureFileName</key>
             <string>chicks_sprites.png</string>
         </dict>

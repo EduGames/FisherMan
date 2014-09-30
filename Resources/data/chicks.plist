@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
+<dict>
+    <key>back_ground</key>
+    <string>farm_bg.png</string>
+    <key>static</key>
+    <dict>
+        <key>chicken.png</key>
+        <dict>
+            <key>x</key>
+            <string>500</string>
+            <key>y</key>
+            <string>700</string>
+        </dict>
+    </dict>
+    <key>dynamics</key>
     <dict>
         <key>file_1</key>
         <dict>
@@ -25,4 +39,5 @@
             <string>400</string>
         </dict>
     </dict>
+</dict>
 </plist>

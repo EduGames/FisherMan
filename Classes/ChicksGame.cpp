@@ -45,7 +45,10 @@ bool ChicksGame::init()
 }
 
 void ChicksGame::createGameScreen () {
-    Sprite * bg = Sprite::create("farm_bg.png");
+    std::string levelsFile = CCFileUtils::sharedFileUtils()->fullPathForFilename("data/chicks.plist");
+    _levelData = Dictionary::createWithContentsOfFileThreadSafe(levelsFile.c_str());
+    
+    Sprite * bg = Sprite::create(_levelData->valueForKey("back_ground")->_string);
     bg->setPosition(Vec2(_screenSize.width * 0.5f, _screenSize.height * 0.5f));
     this->addChild(bg, kBackground);
     
@@ -54,7 +57,8 @@ void ChicksGame::createGameScreen () {
 
     this->addChild(_gameBatchNode, kForeground);
     
-    createChicks();
+    createStaticObjects();
+    createDynamicObjects();
     
     _scoreDisplayLarge = LabelTTF::create();
     _scoreDisplayLarge->setFontSize(300);
@@ -103,16 +107,31 @@ void ChicksGame::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event * event){
         }
     }
 }
+void ChicksGame::createStaticObjects(){
+    Dictionary * _chicksDict = (Dictionary *) _levelData->objectForKey("static");
+    
+    Sprite * sprite;
+    DictElement* pElement = NULL;
+    CCDICT_FOREACH(_chicksDict, pElement){
+        Dictionary * object = (Dictionary *) pElement->getObject();
+        auto x_black = object->valueForKey("x")->floatValue();
+        auto y_black = object->valueForKey("y")->floatValue();
+        
+        sprite = Sprite::createWithSpriteFrameName(pElement->getStrKey());
+        sprite->setPosition(Vec2(x_black,y_black));
+        _gameBatchNode->addChild(sprite, kMiddleground);
+    }
+    
+}
 
-void ChicksGame::createChicks(){
-    std::string levelsFile = CCFileUtils::sharedFileUtils()->fullPathForFilename("data/chicks.plist");
-    auto _chickss = Dictionary::createWithContentsOfFileThreadSafe(levelsFile.c_str());
+void ChicksGame::createDynamicObjects(){
+    Dictionary * _chicksDict = (Dictionary *) _levelData->objectForKey("dynamics");
     
     Chick *sprite;
     Sprite * black;
     int i= 1;
     DictElement* pElement = NULL;
-    CCDICT_FOREACH(_chickss, pElement){
+    CCDICT_FOREACH(_chicksDict, pElement){
         Dictionary * chickk = (Dictionary *) pElement->getObject();
         auto x = chickk->valueForKey("x")->floatValue();
         auto y = chickk->valueForKey("y")->floatValue();
@@ -135,6 +154,7 @@ void ChicksGame::createChicks(){
         
         i++;
     }
+    
 }
 void ChicksGame::addScore(){
     _scoring = true;
