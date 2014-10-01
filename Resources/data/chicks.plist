@@ -9,9 +9,9 @@
         <key>chicken.png</key>
         <dict>
             <key>x</key>
-            <string>500</string>
+            <string>900</string>
             <key>y</key>
-            <string>700</string>
+            <string>300</string>
         </dict>
     </dict>
     <key>dynamics</key>
@@ -19,13 +19,13 @@
         <key>file_1</key>
         <dict>
             <key>x</key>
-            <string>500</string>
+            <string>520</string>
             <key>y</key>
-            <string>700</string>
+            <string>600</string>
             <key>x_black</key>
-            <string>200</string>
+            <string>1050</string>
             <key>y_black</key>
-            <string>500</string>
+            <string>150</string>
         </dict>
         <key>file_2</key>
         <dict>
@@ -34,9 +34,42 @@
             <key>y</key>
             <string>400</string>
             <key>x_black</key>
+            <string>1250</string>
+            <key>y_black</key>
+            <string>320</string>
+        </dict>
+        <key>file_3</key>
+        <dict>
+            <key>x</key>
+            <string>1880</string>
+            <key>y</key>
+            <string>200</string>
+            <key>x_black</key>
             <string>800</string>
             <key>y_black</key>
-            <string>400</string>
+            <string>150</string>
+        </dict>
+        <key>file_4</key>
+        <dict>
+            <key>x</key>
+            <string>1350</string>
+            <key>y</key>
+            <string>940</string>
+            <key>x_black</key>
+            <string>650</string>
+            <key>y_black</key>
+            <string>200</string>
+        </dict>
+        <key>file_5</key>
+        <dict>
+            <key>x</key>
+            <string>1000</string>
+            <key>y</key>
+            <string>700</string>
+            <key>x_black</key>
+            <string>500</string>
+            <key>y_black</key>
+            <string>150</string>
         </dict>
     </dict>
 </dict>
