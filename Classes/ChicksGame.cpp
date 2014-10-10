@@ -6,6 +6,7 @@
  */
 
 #include "ChicksGame.h"
+
 USING_NS_CC;
 
 ChicksGame::~ChicksGame() {
@@ -41,6 +42,21 @@ bool ChicksGame::init()
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
         
     this->schedule(schedule_selector(ChicksGame::update));
+    
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    auto closeItem = MenuItemImage::create(
+                    "CloseNormal.png",
+                    "CloseSelected.png",
+                    CC_CALLBACK_1(ChicksGame::menuCloseCallback, this));
+    
+    closeItem->setPosition(Vec2(origin.x + _screenSize.width - closeItem->getContentSize().width/2 ,
+                            origin.y + closeItem->getContentSize().height/2));
+
+    // create menu, it's an autorelease object
+    auto menu = Menu::create(closeItem, NULL);
+    menu->setPosition(Vec2::ZERO);
+    this->addChild(menu, 1);
+    
     return true;
 }
 
@@ -182,4 +198,18 @@ void ChicksGame::bigScoreDone (Node* pSender) {
     pSender->setScale(0.2);
     pSender->setVisible(false);
     _scoring = false;
+}
+
+
+void ChicksGame::menuCloseCallback(Ref* pSender)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
+    return;
+#endif
+    Director::getInstance()->getOpenGLView()->setDesignResolutionSize(1272,627, ResolutionPolicy::SHOW_ALL);
+   Director::getInstance()->replaceScene(NumbersGame::createScene());
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    //exit(0);
+#endif
 }

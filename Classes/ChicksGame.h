@@ -10,11 +10,13 @@
 
 #include "cocos2d.h"
 #include "Objects/Chick.h"
-enum {
-    kBackground,
-    kMiddleground,
-    kForeground
-};
+#include "NumbersGame.h"
+
+//enum {
+//    kBackground,
+//    kMiddleground,
+//    kForeground
+//};
 class ChicksGame : public cocos2d::Layer {
 public:
     virtual ~ChicksGame();
@@ -46,6 +48,8 @@ private:
     void addScore();
     void bigScoreDone (Node* pSender);
     bool _scoring;
+    
+    void menuCloseCallback(cocos2d::Ref* pSender);
 };
 
 #endif	/* CHICKSGAME_H */

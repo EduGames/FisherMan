@@ -34,6 +34,8 @@ private:
     cocos2d::LabelTTF * _scoreDisplay;
     cocos2d::LabelTTF * _scoreDisplayLarge;
     int _score;
+    
+    void menuCloseCallback(cocos2d::Ref* pSender);
 public:
     NumbersGame();
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
